@@ -19,12 +19,12 @@ public class PersonRestController {
 
         @RequestMapping("/person/{id}")
         public Person message(@PathVariable String id) {//REST Endpoint.
-            //create stream of people with a helper method, filter to the one with the desired ID
-            //
+            //call getPersonById method
 
 
             //Person person = new Person();
             //return person;
+            return null;
         }
     }
 }
