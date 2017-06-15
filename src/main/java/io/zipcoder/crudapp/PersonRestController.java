@@ -1,10 +1,7 @@
 package io.zipcoder.crudapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -19,8 +16,18 @@ public class PersonRestController {
     }
 
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Person message(@PathVariable String id) {//REST Endpoint.
+    public Person findPerson(@PathVariable String id) {//REST Endpoint.
         return people.findOne(Integer.parseInt(id));
+    }
+
+    @RequestMapping(value = "/person", method = RequestMethod.POST)
+    public void addPerson(@RequestParam String name, @RequestParam Integer age) {
+        people.save(new Person(name, age));
+    }
+
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
+    public void deletePerson(@PathVariable Integer id) {
+        people.delete(id);
     }
 
 }
