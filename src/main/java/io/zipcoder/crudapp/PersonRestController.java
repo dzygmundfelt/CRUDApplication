@@ -13,12 +13,12 @@ public class PersonRestController {
     @Autowired
     private PersonRepository people;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String welcome() {//Welcome page, non-rest
         return "There's something here...";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
     public Person message(@PathVariable String id) {//REST Endpoint.
         return people.findOne(Integer.parseInt(id));
     }
