@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequestMapping(value = "/person")
 public class PersonRestController {
 
     @Autowired
@@ -17,7 +18,7 @@ public class PersonRestController {
         return "There's something here...";
     }
 
-    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Person> findPerson(@PathVariable String id) {//REST Endpoint.
         Person person = people.findOne(Integer.parseInt(id));
         if(person == null) {
@@ -26,22 +27,24 @@ public class PersonRestController {
         return new ResponseEntity<Person>(person, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/person", method = RequestMethod.POST)
-    public Person addPerson(@RequestParam String name, @RequestParam Integer age) {
-        return people.save(new Person(name, age));
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity<Person> addPerson(@RequestParam String name, @RequestParam Integer age) {
+        Person person = new Person(name, age);
+        people.save(person);
+        return new ResponseEntity<Person>(person, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Person> deletePerson(@PathVariable Integer id) {
         Person person = people.findOne(id);
         if(person == null) {
             return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
         }
         people.delete(id);
-        return new ResponseEntity<Person>(person, HttpStatus.OK);
+        return new ResponseEntity<Person>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/person/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Person> modifyPerson(@PathVariable Integer id, @RequestParam String name, @RequestParam Integer age) {
         Person person = people.findOne(id);
         if(person == null) {
